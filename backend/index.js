@@ -7,92 +7,92 @@ var dbConnection;
 var db;
 
 const connectToDBIfNotAlive = async () =>  {
-	if (dbConnection && dbConnection.isConnected()) {
+    if (dbConnection && dbConnection.isConnected()) {
         return;
     }
-	const user = encodeURIComponent(process.env.MONGODB_USER);
-	const password = encodeURIComponent(process.env.MONGODB_PASS);
-	const host = process.env.MONGODB_HOST;
-	const authMechanism = 'DEFAULT';
+    const user = encodeURIComponent(process.env.MONGODB_USER);
+    const password = encodeURIComponent(process.env.MONGODB_PASS);
+    const host = process.env.MONGODB_HOST;
+    const authMechanism = 'DEFAULT';
 
-	// Database Name
-	const dbName = 'wanglai';
+    // Database Name
+    const dbName = 'wanglai';
 
-	const uri = f('mongodb://%s:%s@%s:27017/?authMechanism=%s',
-	  user, password, host, authMechanism);
+    const uri = f('mongodb://%s:%s@%s:27017/?authMechanism=%s',
+      user, password, host, authMechanism);
 
-	console.log("connecting : ", uri)
+    console.log("connecting : ", uri)
 
-	try {
-		client = new MongoClient(uri)
+    try {
+        client = new MongoClient(uri)
         dbConnection = await client.connect();
         db = client.db(dbName);
     } catch (e) {
-    	// TODO: custome error.
+        // TODO: custome error.
         throw e;
-	}
+    }
 }
 
 exports.createProduct = async (req, res) => {
-	if(req.method!='POST'){
-		console.log('only allow POST method at this endpoint');
-		res.status(405).send({ error: 'only allow POST method at this endpoint' });
-	}
-	if(req.get('content-type')!='application/json'){
-		console.log('only allow application/json at this endpoint');
-		res.status(400).send({ error: 'only allow application/json at this endpoint' });
-	}
+    if(req.method!='POST'){
+        console.log('only allow POST method at this endpoint');
+        res.status(405).send({ error: 'only allow POST method at this endpoint' });
+    }
+    if(req.get('content-type')!='application/json'){
+        console.log('only allow application/json at this endpoint');
+        res.status(400).send({ error: 'only allow application/json at this endpoint' });
+    }
 
-	await connectToDBIfNotAlive().catch(
-		(err) => {res.status(500).end(err.message);}
-	)
+    await connectToDBIfNotAlive().catch(
+        (err) => {res.status(500).end(err.message);}
+    )
 
-	db.collection('products').insertOne(req.body, function(err, r) {
-		if(err){
-			throw err
-		}else{
-			insProdStr = JSON.stringify(req.body)
-			console.log(insProdStr +' has been inserted');
-			res.send(insProdStr +' has been inserted');
-		}
-	});
+    db.collection('products').insertOne(req.body, function(err, r) {
+        if(err){
+            throw err
+        }else{
+            insProdStr = JSON.stringify(req.body)
+            console.log(insProdStr +' has been inserted');
+            res.send(insProdStr +' has been inserted');
+        }
+    });
 }
 
 exports.getProducts = async (req, res) => {
-	if(req.method!='GET'){
-		console.log('only allow GET method at this endpoint');
-		res.status(405).send({ error: 'only allow GET method at this endpoint' });
-	}
+    if(req.method!='GET'){
+        console.log('only allow GET method at this endpoint');
+        res.status(405).send({ error: 'only allow GET method at this endpoint' });
+    }
 
-	await connectToDBIfNotAlive().catch(
-		(err) => {res.status(500).end(err.message);}
-	)
-	db.collection('products').find({}).toArray(function(err, docs) {		
-		if(err){
-			throw err
-		}else{
-			docStr = JSON.stringify(docs)
-			console.log('docs are ' + docStr);
-			res.send('docs are ' + docStr);
-		}
-	});
+    await connectToDBIfNotAlive().catch(
+        (err) => {res.status(500).end(err.message);}
+    )
+    db.collection('products').find({}).toArray(function(err, docs) {        
+        if(err){
+            throw err
+        }else{
+            docStr = JSON.stringify(docs)
+            console.log('docs are ' + docStr);
+            res.send('docs are ' + docStr);
+        }
+    });
 }
 
 // Use this func to test if your local emulator works fine with ENV
 // Ref: https://github.com/GoogleCloudPlatform/cloud-functions-emulator/issues/178
 exports.getEnv = (req, res) => {
-	res.send('MONGODB_USER is ' + process.env.MONGODB_USER);
+    res.send('MONGODB_USER is ' + process.env.MONGODB_USER);
 }
 
 exports.getHelloWorld = (req, res) => {
-	res.send("Hello World");
+    res.send("Hello World");
 }
 
 exports.getHTTP = async (req, res) => {
-	await connectToDBIfNotAlive().catch(
-		(err) => {res.status(500).end(err.message);}
-	)
+    await connectToDBIfNotAlive().catch(
+        (err) => {res.status(500).end(err.message);}
+    )
 
-	console.log('Hello World: db is ' + dbConnection.isConnected());
-	res.send('Hello World: db is ' + dbConnection.isConnected());
+    console.log('Hello World: db is ' + dbConnection.isConnected());
+    res.send('Hello World: db is ' + dbConnection.isConnected());
 }
