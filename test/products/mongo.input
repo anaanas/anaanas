@@ -1,0 +1,7 @@
+# run the following in mongodb shell to populate the db for testing FE
+
+db.exampleproducts.insertMany([
+{name:"手炒黑糖波霸撞奶", desc:"熬煮2小时的手炒黑糖波霸，充满嚼劲的珍珠配上鲜奶，味道浓郁，喝出奶茶新高度", img: "https://storage.googleapis.com/example-product-images/1-min.JPG", count: 123},
+{name:"旺来水果茶", desc:"人气NO.1必喝，全台第一水果茶！多种新鲜水果，清爽的热带果香，丰富多重的口感，一杯饮品多种享受", img: "https://storage.googleapis.com/example-product-images/11-min.JPG", count: 456},
+{name:"森永牛奶糖奶茶", desc:"特别加入经典森永牛奶糖，以茶香中和牛奶的甜腻，还没开喝就能闻到经典的浓浓牛奶糖味，一口喝下浓郁的焦糖香气和鲜奶在嘴里蔓延，不过分死甜，风味更加香醇", img: "https://storage.googleapis.com/example-product-images/16-min.JPG", count: 789}
+])
