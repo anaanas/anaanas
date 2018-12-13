@@ -1,4 +1,5 @@
-# Dependency directories
+# Nodejs generated 
+package-lock.json
 node_modules/
 
 # Credentials directories

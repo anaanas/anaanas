@@ -1,10 +1,17 @@
+'use strict';
+
 const mongodb = require('mongodb')
 const f = require('util').format;
 const MongoClient = mongodb.MongoClient;
+const auth = require('./src/auth');
 
 var client;
 var dbConnection;
 var db;
+
+const ROLE_ADMIN = 'admin'
+
+// Helper functions.
 
 const connectToDBIfNotAlive = async () =>  {
     if (dbConnection && dbConnection.isConnected()) {
@@ -33,14 +40,24 @@ const connectToDBIfNotAlive = async () =>  {
     }
 }
 
+// Helper functions end.
+
 exports.createProduct = async (req, res) => {
-    if(req.method!='POST'){
+    if (auth.getRole(req) !== ROLE_ADMIN) {
+        // TODO : send redirect to login page.
+        res.status(401).send({error: 'method not allowed, login required'});
+        return;
+    }
+
+    if(req.method !== 'POST'){
         console.log('only allow POST method at this endpoint');
         res.status(405).send({ error: 'only allow POST method at this endpoint' });
+        return;
     }
-    if(req.get('content-type')!='application/json'){
+    if(req.get('content-type') !== 'application/json'){
         console.log('only allow application/json at this endpoint');
         res.status(400).send({ error: 'only allow application/json at this endpoint' });
+        return;
     }
 
     await connectToDBIfNotAlive().catch(
@@ -70,7 +87,7 @@ exports.getProducts = async (req, res) => {
     db.collection('products').find({}).toArray(function(err, docs) {        
         if(err){
             throw err
-        }else{
+        } else {
             docStr = JSON.stringify(docs)
             console.log('docs are ' + docStr);
             res.send('docs are ' + docStr);
@@ -81,11 +98,7 @@ exports.getProducts = async (req, res) => {
 // Use this func to test if your local emulator works fine with ENV
 // Ref: https://github.com/GoogleCloudPlatform/cloud-functions-emulator/issues/178
 exports.getEnv = (req, res) => {
-    res.send('MONGODB_USER is ' + process.env.MONGODB_USER);
-}
-
-exports.getHelloWorld = (req, res) => {
-    res.send("Hello World");
+    res.send(JSON.stringify(process.env));
 }
 
 exports.getHTTP = async (req, res) => {
@@ -95,4 +108,10 @@ exports.getHTTP = async (req, res) => {
 
     console.log('Hello World: db is ' + dbConnection.isConnected());
     res.send('Hello World: db is ' + dbConnection.isConnected());
+}
+
+exports.login = auth.loginHandler;
+// Use this for testing auth.
+exports.getRole = async(req, res) => {
+    res.send({role : auth.getRole(req)});
 }
