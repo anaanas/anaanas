@@ -1,3 +1,4 @@
+'use strict';
 const cookieParser = require('cookie-parser');
 const cookie = require('cookie')
 
