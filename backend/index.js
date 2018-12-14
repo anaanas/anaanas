@@ -2,12 +2,17 @@
 
 const auth = require('./src/auth');
 const product = require('./src/product');
+const order = require('./src/order');
 
 exports.createProduct = product.createProductHandler;
 
 exports.createProducts = product.createProductsHandler;
 
 exports.getProducts = product.getProductsHandler;
+
+exports.createOrder = order.createOrderHandler;
+
+exports.getOrders = order.getOrdersHandler;
 
 exports.login = auth.loginHandler;
 
