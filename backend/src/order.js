@@ -3,18 +3,26 @@
 const crud = require('./helper/curd');
 const auth = require('./auth');
 
-const ROLE_ADMIN = 'admin';
+const ORDERS_TABLE = 'orders';
 
 exports.createOrderHandler = async (req, res) => {
-    // TODO: add validation to ensure the order status is "pending".
-    crud.create(req, res, 'orders')
+	// TODO order validation.
+    const orders = req.body;
+    try {
+        const result = await crud.createMany(orders, PRODUCTS_TABLE);
+        res.status(201).send(result.insertedIds);
+    } catch(err) {
+        console.log(err.message);
+        res.status(500).send({ err: 'internal error'});
+    }
 }
 
 exports.getOrdersHandler = async (req, res) => {
-    if (auth.getRole(req) !== ROLE_ADMIN) {
-        // TODO : send redirect to login page.
-        res.status(401).send({error: 'method not allowed, login required'});
-        return;
-    }
-    crud.get(req, res, 'orders')
-}
+    var filter = req.body;
+    try {
+        const orders = await crud.get(filter, ORDERS_TABLE)
+        res.send(orders);
+    } catch(err) {
+        console.log(err.message);
+        res.status(500).send({ err: 'internal error'});
+    }}

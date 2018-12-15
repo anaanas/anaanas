@@ -18,7 +18,6 @@ const connectToDBIfNotAlive = async () =>  {
     const host = process.env.MONGODB_HOST;
     const authMechanism = 'DEFAULT';
 
-
     const uri = f('mongodb://%s:%s@%s:27017/?authMechanism=%s',
       user, password, host, authMechanism);
 
@@ -33,75 +32,17 @@ const connectToDBIfNotAlive = async () =>  {
     }
 }
 
-const createCommon = async (req, res) => {
-    if(req.method !== 'POST'){
-        console.log('only allow POST method at this endpoint');
-        res.status(405).send({ error: 'only allow POST method at this endpoint' });
-        return;
-    }
-
-    if(req.get('content-type') !== 'application/json'){
-        console.log('only allow application/json at this endpoint');
-        res.status(400).send({ error: 'only allow application/json at this endpoint' });
-        return;
-    }
-
-    await connectToDBIfNotAlive().catch(
-        (err) => {res.status(500).end(err.message);}
-    )
+exports.createMany = async (docs, collectionName) => {
+    await connectToDBIfNotAlive();
+    return db.collection(collectionName).insertMany(docs);
 }
 
-exports.create = async (req, res, collectionName) => {
-    await createCommon(req, res).catch(
-        (err) => {res.status(500).end(err.message);}
-    )
-
-    db.collection(collectionName).insertOne(req.body, function(err, r) {
-        if(err){
-            throw err
-        }else{
-            const insProdStr = JSON.stringify(req.body)
-            console.log(insProdStr +' has been inserted');
-            res.send(insProdStr +' has been inserted');
-        }
-    });
-}
-
-exports.createMany = async (req, res, collectionName) => {
-    await createCommon(req, res).catch(
-        (err) => {res.status(500).end(err.message);}
-    )
-
-    db.collection(collectionName).insertMany(req.body, function(err, r) {
-        if(err){
-            throw err
-        }else{
-            const insProdStr = JSON.stringify(req.body)
-            console.log(insProdStr +' has been inserted');
-            res.send(insProdStr +' has been inserted');
-        }
-    });
-}
-
-exports.get = async (req, res, collectionName) => {
-    if(req.method!='GET'){
-        console.log('only allow GET method at this endpoint');
-        res.status(405).send({ error: 'only allow GET method at this endpoint' });
+exports.get = async (filter, collectionName) => {
+    await connectToDBIfNotAlive()
+    if (filter === undefined) {
+        filter = {};
     }
-
-    await connectToDBIfNotAlive().catch(
-        (err) => {res.status(500).end(err.message);}
-    )
-
-    db.collection(collectionName).find({}).toArray(function(err, docs) {        
-        if(err){
-            throw err
-        } else {
-            const docStr = JSON.stringify(docs)
-            console.log('docs are ' + docStr);
-            res.send('docs are ' + docStr);
-        }
-    });
+    return db.collection(collectionName).find(filter).toArray();
 }
 
 // TODO: implement update and delete

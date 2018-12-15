@@ -3,16 +3,29 @@
 const auth = require('./src/auth');
 const product = require('./src/product');
 const order = require('./src/order');
+const ROLE_ADMIN = 'admin';
 
-exports.createProduct = product.createProductHandler;
-
-exports.createProducts = product.createProductsHandler;
+exports.createProducts = async (req, res) => {
+    if (auth.getRole(req) !== ROLE_ADMIN) {
+        // TODO : send redirect to login page.
+        res.status(401).send({error: 'method not allowed, login required'});
+        return;
+    }
+    await product.createProductsHandler(req, res);
+}
 
 exports.getProducts = product.getProductsHandler;
 
-exports.createOrder = order.createOrderHandler;
+exports.getOrders = async (req, res) => {
+    if (auth.getRole(req) !== ROLE_ADMIN) {
+        // TODO : send redirect to login page.
+        res.status(401).send({error: 'method not allowed, login required'});
+        return;
+    }
+    await order.getOrdersHandler(req, res);
+}
 
-exports.getOrders = order.getOrdersHandler;
+exports.createOrder = order.createOrderHandler;
 
 exports.login = auth.loginHandler;
 
