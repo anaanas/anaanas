@@ -7,19 +7,19 @@ const allProducts = [
   {
     id: 1,
     name: 'Hand-Made Boba Milk Tea',
-    img: 'https://res.cloudinary.com/sivadass/image/upload/v1494699523/icons/bare-tree.png',
+    src: 'https://storage.googleapis.com/example-product-images/1-min.JPG',
     price: 5.95,
   },
   {
     id: 2,
     name: 'Wanglai Fruit Tea',
-    img: 'https://res.cloudinary.com/sivadass/image/upload/v1494699523/icons/bare-tree.png',
+    src: 'https://storage.googleapis.com/example-product-images/11-min.JPG',
     price: 5.55,
   },
   {
     id: 3,
     name: 'Senyong Milk Tea',
-    img: 'https://res.cloudinary.com/sivadass/image/upload/v1494699523/icons/bare-tree.png',
+    src: 'https://storage.googleapis.com/example-product-images/16-min.JPG',
     price: 6.35,
   },
 ];
