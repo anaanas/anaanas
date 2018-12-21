@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Products from "./components/Products";
+import Header from './components/Header';
+import Products from './components/Products';
+import Cart from './components/Cart';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const allProducts = [
   {
@@ -24,20 +27,46 @@ const allProducts = [
   },
 ];
 
+const allCartItems = [
+  {
+    id: 1,
+    name: 'Black tea',
+    src: 'https://storage.googleapis.com/example-product-images/1-min.JPG',
+    price: 5.95,
+    count: 1,
+    size: 'regular',
+    temp: 'HOT',
+    topping: 'none',
+  },
+  {
+    id: 2,
+    name: 'Green tea',
+    src: 'https://storage.googleapis.com/example-product-images/16-min.JPG',
+    price: 5.95,
+    count: 1,
+    size: 'regular',
+    temp: 'HOT',
+    topping: 'none',
+  },
+];
+
+const myCart = props => {
+  return <Cart cartItemList={allCartItems} {...props} />;
+};
+
+const myProducts = props => {
+  return <Products productList={allProducts} {...props} />;
+};
+
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      products: allProducts
-    }
-  }
   render() {
     return (
-      <div className="App">
-        <Products
-            productList = {this.state.products}
-        />
-      </div>
+      <Router>
+        <div className="App">
+          <Header />  
+          <Route path="/" exact component={myProducts} />
+        </div>
+      </Router>
     );
   }
 }

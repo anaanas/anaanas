@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Product from './Product';
 import NoResults from './NoResults';
-import {CSSTransition, TransitionGroup} from "react-transition-group/TransitionGroup";
-
 
 class Products extends Component {
   render() {
@@ -11,10 +9,8 @@ class Products extends Component {
       .map(product => {
         return (
           <Product
-            key = {product.id}
-            price={product.price}
-            name={product.name}
-            image={product.src}
+            key = {product._id}
+            product={product}
           />
         );
       });
