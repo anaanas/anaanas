@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
 
+const availabilityLabel = count => {
+  if (count >= 20) {
+    return <p className="badge badge-success">available</p>
+  }
+  if (count > 0) {
+    return <p className="badge badge-warning">{count} left</p>
+  }
+  
+  return <p className="badge badge-danger">sold out</p>
+};
+
 class Product extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +23,7 @@ class Product extends Component {
       <div className="product">
         <h3 className="product-name">{product.name}</h3>
         <img src={image}/>
-        <p><b>Price</b> $ {product.price} | available </p>
+        <p><b>Price</b> $ {product.price} | {availabilityLabel(product.count)} </p>
         <select>
           <option key='1'>1</option>
           <option key='2'>2</option>

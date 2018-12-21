@@ -8,28 +8,31 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const allProducts = [
   {
-    id: 1,
+    _id: 1,
     name: 'Hand-Made Boba Milk Tea',
     src: 'https://storage.googleapis.com/example-product-images/1-min.JPG',
     price: 5.95,
+    count: 100,
   },
   {
-    id: 2,
+    _id: 2,
     name: 'Wanglai Fruit Tea',
     src: 'https://storage.googleapis.com/example-product-images/11-min.JPG',
     price: 5.55,
+    count: 10,
   },
   {
-    id: 3,
+    _id: 3,
     name: 'Senyong Milk Tea',
     src: 'https://storage.googleapis.com/example-product-images/16-min.JPG',
     price: 6.35,
+    count: 0,
   },
 ];
 
 const allCartItems = [
   {
-    id: 1,
+    _id: 1,
     name: 'Black tea',
     src: 'https://storage.googleapis.com/example-product-images/1-min.JPG',
     price: 5.95,
@@ -39,7 +42,7 @@ const allCartItems = [
     topping: 'none',
   },
   {
-    id: 2,
+    _id: 2,
     name: 'Green tea',
     src: 'https://storage.googleapis.com/example-product-images/16-min.JPG',
     price: 5.95,
