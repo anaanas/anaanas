@@ -5,7 +5,7 @@ class Cart extends Component {
     render() {
         let cartData = this.props.cartItemList.map(cartItem  => {
             return (<CartItem 
-                key = {cartItem.id}
+                key = {cartItem._id}
                 item = {cartItem}
             />)
         });

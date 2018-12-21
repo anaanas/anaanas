@@ -4,7 +4,7 @@ import Cart from './Cart';
 
 const allCartItems = [
   {
-    id: 1,
+    _id: 1,
     name: 'Black tea',
     src: 'https://storage.googleapis.com/example-product-images/1-min.JPG',
     price: 5.95,
@@ -14,7 +14,7 @@ const allCartItems = [
     topping: 'none',
   },
   {
-    id: 2,
+    _id: 2,
     name: 'Green tea',
     src: 'https://storage.googleapis.com/example-product-images/16-min.JPG',
     price: 5.95,

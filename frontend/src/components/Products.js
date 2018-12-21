@@ -9,10 +9,8 @@ class Products extends Component {
       .map(product => {
         return (
           <Product
-            key = {product.id}
-            price={product.price}
-            name={product.name}
-            image={product.src}
+            key = {product._id}
+            product={product}
           />
         );
       });
