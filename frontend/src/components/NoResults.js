@@ -1,14 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
+import { Link } from 'react-router-dom';
 
 const NoResults = () => {
   return (
     <div className="products">
       <div className="no-results">
-        <img
-          src="https://res.cloudinary.com/sivadass/image/upload/v1494699523/icons/bare-tree.png"
-          alt="Empty Tree"
-        />
-        <h2>Sorry, no products available</h2>
+        <h2>Sorry, Page Not Found</h2>
+        <Link to='/'> Visit Home </Link>
       </div>
     </div>
   );

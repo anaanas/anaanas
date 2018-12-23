@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Header from './components/Header';
 import Products from './components/Products';
 import Cart from './components/Cart';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import NoResults from './components/NoResults';
 
 const allProducts = [
   {
@@ -66,8 +66,12 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Header />  
-          <Route path="/" exact component={myProducts} />
+          <Header />
+          <Switch>
+            <Route path="/" exact component={myProducts} />
+            <Route path="/cart" component={myCart} />
+            <Route component={NoResults} />
+          </Switch>
         </div>
       </Router>
     );
