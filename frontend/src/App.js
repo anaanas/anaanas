@@ -5,12 +5,14 @@ import Products from './components/Products';
 import Cart from './components/Cart';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NoResults from './components/NoResults';
+import ProductDetail from './components/ProductDetail';
 
 const allProducts = [
   {
     _id: 1,
     name: 'Hand-Made Boba Milk Tea',
     src: 'https://storage.googleapis.com/example-product-images/1-min.JPG',
+    description: 'Best Milk Tea, no fat',
     price: 5.95,
     count: 100,
   },
@@ -18,6 +20,7 @@ const allProducts = [
     _id: 2,
     name: 'Wanglai Fruit Tea',
     src: 'https://storage.googleapis.com/example-product-images/11-min.JPG',
+    description: 'Health',
     price: 5.55,
     count: 10,
   },
@@ -25,6 +28,7 @@ const allProducts = [
     _id: 3,
     name: 'Senyong Milk Tea',
     src: 'https://storage.googleapis.com/example-product-images/16-min.JPG',
+    description: 'Sweet like your love',
     price: 6.35,
     count: 0,
   },
@@ -70,6 +74,7 @@ class App extends Component {
           <Switch>
             <Route path="/" exact component={myProducts} />
             <Route path="/cart" component={myCart} />
+            <Route path="/product/:name" component={ProductDetail} />
             <Route component={NoResults} />
           </Switch>
         </div>
