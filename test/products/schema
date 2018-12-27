@@ -1,9 +1,9 @@
 // TODO(fanzonezy): finish schema and ensure it works
-db.createCollection("testproducts", {
+db.createCollection("products_v1", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: [ "_id", "name", "src", "price", "desc", "count", "size", "temp" ],
+      required: [ "_id", "name", "src", "price", "desc", "createdAt", "modifiedAt"],
       properties: {
         _id: {
             bsonType: "string",
@@ -31,22 +31,197 @@ db.createCollection("testproducts", {
             minimum: 0,
             description: "must be an integer greater or equal 0"
         },
-        size: {
-            enum: [ "Small", "Medium", "Large" ],
-            description: "can only be one of the enum values and is required"
+        createdAt: {
+          bsonType: "date",
+          description: "'createdAt' is a requried date field"
         },
-        temp: {
-            enum: [ "Hot", "100%Ice", "50%Ice" ],
-            description: "can only be one of the enum values and is required"
-        },
-        topping: {
-            oneOf: [
-              null,
-              {anyOf: ["pearls", "mini pearls", "alo"]}
-              ],
-            description: "must be either null or an array of values"
+        modifiedAt: {
+          bsonType: "date",
+          description: "'modifiedAt' is a required date field"
         }
       }
     }
   }
 })
+
+db.createCollection("orders_v1", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      additionalProperties: false,
+      required: [
+      	"_id",
+        "products",
+        "cell",
+        "address",
+        "status",
+        "createdAt",
+        "modifiedAt"
+      ],
+      properties: {
+        _id : {
+            bsonType : "objectId",
+        },
+      	paypalTxnId : {
+      		bsonType : "string",
+      		description : "the transaction id received from PayPal"
+      	},
+        products: {
+          bsonType: [
+            "array"
+          ],
+          additionalProperties: false,
+          required: [
+              "productId",
+              "count",
+              "option"
+          ],  
+          minItems: 1,
+          maxItems: 5,
+          items: {
+            bsonType: "object",
+            additionalProperties: false,
+            required: [
+              "productId",
+              "count",
+              "option"
+            ],
+            properties : {
+              productId : {
+                bsonType: "objectId",
+                description: "'productId' is a required objectId field which references a product",
+              },
+              count: {
+                bsonType: "int",
+                minimum: 1,
+                maximum: 5,
+                description: "'count' is a required int field",
+              },
+              option: {
+                bsonType: "object",
+                properties: {
+                  temperature: {
+                  	bsonType : "string",
+                    enum: [
+                      "100%ice",
+                      "50%ice",
+                      "hot"
+                    ],
+                    description: "'temperature' is a required enum field, and it should be in ['temperature', 'sweetness', 'size']"
+                  },
+                  sweetness: {
+                  	bsonType : "string",
+                    enum: [
+                      "normal",
+                      "50%sweet",
+                      "25%sweet"
+                    ],
+                    description: "'sweetness' is a required enum field, and it should be in ['normal', '50%sweet', '25%sweet']"
+                  },
+                  size: {
+                  	bsonType : "string",
+                    enum: [
+                      "regular",
+                      "large"
+                    ],
+                    description: "'size' is a required enum field, and it should be in ['regular', 'large']"
+                  },
+                  topping: {
+                  	bsonType : "string",
+                    enum: [
+                      "pearls",
+                      "mini pearls",
+                      "alo"
+                    ],
+                    description: "'topping' is a optional enum field, and it should be in ['pearls', 'mini pearls', 'alo']"
+                  }
+                }
+              }
+            }
+          }
+        },
+        cell: {
+          bsonType: "string",
+          description: "'cell' is a required string field"
+        },
+        address: {
+          bsonType: "object",
+          additionalProperties: false,
+          required: [
+            "street1",
+            "city",
+            "state",
+            "zipCode"
+          ],
+          properties: {
+            street1: {
+              bsonType: "string",
+              description: "'street1' is a required string field"
+            },
+            street2: {
+              bsonType: "string",
+              description: "'street2' is a optional string field"
+            },
+            city: {
+              bsonType: "string",
+              description: "'city' is a required string field"
+            },
+            state: {
+              bsonType: "string",
+              description: "'state' is a required string field"
+            },
+            zipCode: {
+              bsonType: "string",
+              description: "'zipCode' is a required string field"
+            },
+            geolocation: {
+              bsonType: "object",
+              additionalProperties: false,
+              required: [
+                "type",
+                "coordinates"
+              ],
+              properties: {
+                type: {
+                  enum: [
+                    "Point"
+                  ],
+                  description: "goelocation must a 'Point' type",
+                },
+                coordinates: {
+                  bsonType: [
+                    "array"
+                  ],
+                  minItems: 2,
+                  maxItems: 2,
+                  items : {
+                  	bsonType : "double"
+                  }
+                }
+              }
+            }
+          }
+        },
+        customerName: {
+          bsonType: "string",
+          description: "'customerName' is a optional string field"
+        },
+        status: {
+          enum: [
+            "pending",
+            "completed"
+          ],
+          description: "'status' is a required enum field, and it should be in ['pending', 'completed']"
+        },
+        createdAt: {
+          bsonType: "date",
+          description: "'createdAt' is a requried date field"
+        },
+        modifiedAt: {
+          bsonType: "date",
+          description: "'modifiedAt' is a required date field"
+        }
+      }
+    }
+  }
+});
