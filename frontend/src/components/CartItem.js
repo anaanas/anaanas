@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { CSSTransition } from "react-transition-group";
 
 class CartItem extends Component {
   constructor(props) {
@@ -8,20 +8,32 @@ class CartItem extends Component {
   render() {
     const item = this.props.item;
     return (
-      <div className="single-cart-item">
-        <Link to="/product">
-          <h3>{item.name}</h3>
-        </Link>
-        <img src={item.src} />
-        <p>
-          Size: {item.size}; Temperature: {item.temp}; Topping: {item.topping}
-        </p>
-        <p>{item.price}</p>
-        <p>{item.count}</p>
-        <span onClick={() => alert('Are u sure to remove?')}>
-          <p>remove</p>
-        </span>
-      </div>
+      <CSSTransition
+        key={item.id}
+        classNames="fadeIn"
+        timeout={{ enter: 500, exit: 300 }}
+      >
+        <li className="cart-item" key={item.name}>
+          <img className="product-image" src={item.image} />
+          <div className="product-info">
+            <p className="product-name">{item.name}</p>
+            <p className="product-price">{item.price}</p>
+          </div>
+          <div className="product-total">
+            <p className="quantity">
+              {item.quantity} x {" "}
+            </p>
+            <p className="amount">{item.quantity * item.price}</p>
+          </div>
+          <a
+            className="item-remove"
+            href="#"
+            onClick={this.props.removeProduct.bind(item.id)}
+          >
+            ×
+            </a>
+        </li>
+      </CSSTransition>
     );
   }
 }

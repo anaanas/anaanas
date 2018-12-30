@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
 import CartItem from './CartItem';
+import { TransitionGroup } from "react-transition-group";
+import EmptyCart from "../empty-states/EmptyCart";
 
 class Cart extends Component {
     render() {
-        let cartData = this.props.cartItemList.map(cartItem  => {
-            return (<CartItem 
-                key = {cartItem._id}
-                item = {cartItem}
-            />)
+        let cartItems = this.props.cartItems.map((product, i) => {
+            return <CartItem key={i} item={product} removeProduct={this.props.removeProduct} />;
         });
 
-        return <div className="cart-all">{cartData}</div>
+        if (cartItems.length <= 0) {
+            return <EmptyCart />;
+        } else {
+            return (
+                <TransitionGroup>
+                    {cartItems}
+                </TransitionGroup>
+            );
+        }
     }
-} 
+}
 
 export default Cart;
