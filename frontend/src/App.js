@@ -102,7 +102,7 @@ class App extends Component {
     // Update 'quantityInCart' to help validation.
     let products = this.state.products;
     let prodIdx = products.findIndex(x => x._id === productID);
-    products[prodIdx].quantityInCart = cartItem[cartIdx].quantity;
+    products[prodIdx].quantityInCart = Number(cartItem[cartIdx].quantity);
 
     this.setState({
       products: products,

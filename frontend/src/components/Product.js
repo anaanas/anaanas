@@ -9,7 +9,7 @@ const availabilityLabel = count => {
     return <p className="badge badge-warning">{count} left</p>;
   }
 
-  return <p className="badge badge-danger">sold out</p>;
+  return <p className="badge badge-danger">sold out</p>
 };
 
 class Product extends Component {
@@ -57,8 +57,9 @@ class Product extends Component {
   updateQuantity(quantity) {
     let quantityInCart = this.props.product.quantityInCart;
     let availableQuantity = this.props.product.availableQuantity;
+
     // Don't update if input quantity is not available.
-    if (quantity + quantityInCart > Number(availableQuantity) || quantity < 0) {
+    if (quantity + quantityInCart > availableQuantity || quantity < 0) {
       return;
     }
 

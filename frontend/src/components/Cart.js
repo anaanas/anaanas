@@ -6,7 +6,7 @@ import EmptyCart from "../empty-states/EmptyCart";
 class Cart extends Component {
     render() {
         let cartItems = this.props.cartItems.map((product, i) => {
-            return <CartItem id={i} item={product} removeProduct={this.props.removeProduct} />;
+            return <CartItem key={i} item={product} removeProduct={this.props.removeProduct} />;
         });
 
         if (cartItems.length <= 0) {

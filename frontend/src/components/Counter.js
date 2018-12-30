@@ -16,12 +16,11 @@ class Counter extends Component {
   decrement(e) {
     e.preventDefault();
     this.props.updateQuantity(this.props.quantity - 1);
-
   }
 
   feed(e) {
     e.preventDefault();
-    this.props.updateQuantity(this.refs.feedQty.value);
+    this.props.updateQuantity(Number(this.quantity.value));
   }
 
   resetQuantity() {
@@ -35,7 +34,7 @@ class Counter extends Component {
           –
         </a>
         <input
-          ref="feedQty"
+          ref={(c) => this.quantity = c}
           type="number"
           className="quantity"
           value={this.props.quantity}
