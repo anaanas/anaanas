@@ -55,6 +55,7 @@ db.createCollection("orders_v1", {
         "cell",
         "address",
         "status",
+        "amountToPay",
         "createdAt",
         "modifiedAt"
       ],
@@ -213,6 +214,10 @@ db.createCollection("orders_v1", {
           ],
           description: "'status' is a required enum field, and it should be in ['pending', 'completed']"
         },
+        amountToPay : {
+            bsonType : "double",
+            description : "'amountToPay' is a required double field"
+        },
         createdAt: {
           bsonType: "date",
           description: "'createdAt' is a requried date field"
@@ -224,4 +229,34 @@ db.createCollection("orders_v1", {
       }
     }
   }
+});
+
+// example order 
+db.orders_v1.insert({  
+   _id:new ObjectId(),
+   products:[  
+      {  
+         productId:new ObjectId(),
+         count:new NumberInt(2),
+         option:{  
+            sweetness:"normal",
+            temperature:"hot",
+            size:"regular",
+            topping:"pearls"
+         }
+      }
+   ],
+   cell:"888888888",
+   address:{  
+      street1:"abcd",
+      city:"Santa Clara",
+      state:"CA",
+      zipCode:"95050",
+
+   },
+   customerName:"Someone Unkown",
+   status:"pending",
+   amountToPay:100.0,
+   createdAt:new Date(),
+   modifiedAt:new Date()
 });
