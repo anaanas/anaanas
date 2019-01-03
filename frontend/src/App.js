@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import Header from "./components/Header";
 import Products from "./components/Products";
 import Footer from "./components/Footer";
-import QuickView from "./components/QuickView";
+import Cart from "./components/Cart";
+import Menu from "./components/Menu";
 import "./scss/style.scss";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const allProducts = [
   {
@@ -39,10 +41,11 @@ class App extends Component {
       totalAmount: 0,
       term: "",
       category: "",
-      cartBounce: false,
+      showMenu: false,
       quickViewProduct: {},
       modalActive: false
     };
+    this.handleToggleMenu = this.handleToggleMenu.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleMobileSearch = this.handleMobileSearch.bind(this);
     this.handleCategory = this.handleCategory.bind(this);
@@ -53,6 +56,7 @@ class App extends Component {
     this.handleRemoveProduct = this.handleRemoveProduct.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.Home = this.Home.bind(this);
   }
   // Fetch Initial Set of Products from external API
   getProducts() {
@@ -68,6 +72,12 @@ class App extends Component {
     this.getProducts();
   }
 
+  // Show Side menu
+  handleToggleMenu() {
+    this.setState({
+      showMenu: !this.state.showMenu
+    });
+  }
   // Search by Keyword
   handleSearch(event) {
     this.setState({ term: event.target.value });
@@ -107,16 +117,8 @@ class App extends Component {
     this.setState({
       products: products,
       cart: cartItem,
-      cartBounce: true
     });
-    setTimeout(
-      function () {
-        this.setState({
-          cartBounce: false,
-        });
-      }.bind(this),
-      1000
-    );
+
     this.sumTotalItems(this.state.cart);
     this.sumTotalAmount(this.state.cart);
   }
@@ -171,34 +173,48 @@ class App extends Component {
     });
   }
 
+  Home() {
+    return <Products
+      productsList={this.state.products}
+      searchTerm={this.state.term}
+      addToCart={this.handleAddToCart}
+      openModal={this.openModal}
+    />
+  }
+
+  Cart() {
+    return <Cart
+      handleRemoveProduct={this.handleRemoveProduct}
+      cartItems={this.state.cart}
+    />
+  }
   render() {
+    let containerClass = this.state.showMenu ? "super_container active" : "super_container";
     return (
-      <div className="container">
-        <Header
-          cartBounce={this.state.cartBounce}
-          total={this.state.totalAmount}
-          totalItems={this.state.totalItems}
-          cartItems={this.state.cart}
-          removeProduct={this.handleRemoveProduct}
-          handleSearch={this.handleSearch}
-          handleMobileSearch={this.handleMobileSearch}
-          handleCategory={this.handleCategory}
-          categoryTerm={this.state.category}
-          productQuantity={this.state.moq}
-        />
-        <Products
-          productsList={this.state.products}
-          searchTerm={this.state.term}
-          addToCart={this.handleAddToCart}
-          openModal={this.openModal}
-        />
-        <Footer />
-        <QuickView
-          product={this.state.quickViewProduct}
-          openModal={this.state.modalActive}
-          closeModal={this.closeModal}
-        />
-      </div>
+      <Router>
+        <div>
+          <Menu
+            showMenu={this.state.showMenu}
+            handleSearch={this.handleSearch}
+          />
+          <div className={containerClass}>
+            <Header
+              totalInCart={this.state.totalItems}
+              cartItems={this.state.cart}
+              handleSearch={this.handleSearch}
+              handleToggleMenu={this.handleToggleMenu}
+              handleCategory={this.handleCategory}
+              categoryTerm={this.state.category}
+              productQuantity={this.state.moq}
+            />
+            <Switch>
+              <Route exact path="/" component={this.Home.bind(this)} />
+              <Route path="/cart" component={this.Cart.bind(this)} />
+            </Switch>
+            <Footer />
+          </div>
+        </div>
+      </Router>
     );
   }
 }

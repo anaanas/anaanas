@@ -1,0 +1,8 @@
+# Nodejs generated 
+*/node_modules/
+
+# Credentials directories
+*/credentials/
+
+build/
+.vscode/

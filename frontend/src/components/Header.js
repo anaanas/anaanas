@@ -1,182 +1,81 @@
 import React, { Component } from "react";
-import CartScrollBar from "./CartScrollBar";
-import Cart from './Cart';
-import { findDOMNode } from "react-dom";
+import { Link } from "react-router-dom";
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showCart: false,
-      mobileSearch: false
-    };
-  }
-  handleCart(e) {
+
+  handleToggleMenu(e) {
     e.preventDefault();
-    this.setState({
-      showCart: !this.state.showCart
-    });
+    this.props.handleToggleMenu();
   }
   handleSubmit(e) {
     e.preventDefault();
   }
-  handleMobileSearch(e) {
-    e.preventDefault();
-    this.setState({
-      mobileSearch: true
-    });
-  }
-  handleSearchNav(e) {
-    e.preventDefault();
-    this.setState(
-      {
-        mobileSearch: false
-      },
-      function () {
-        this.refs.searchBox.value = "";
-        this.props.handleMobileSearch();
-      }
-    );
-  }
-  handleClickOutside(event) {
-    const cartNode = findDOMNode(this.refs.cartPreview);
-    const buttonNode = findDOMNode(this.refs.cartButton);
-    if (cartNode.classList.contains("active")) {
-      if (!cartNode || !cartNode.contains(event.target)) {
-        this.setState({
-          showCart: false
-        });
-        event.stopPropagation();
-      }
-    }
-  }
-  componentDidMount() {
-    document.addEventListener(
-      "click",
-      this.handleClickOutside.bind(this),
-      true
-    );
-  }
-  componentWillUnmount() {
-    document.removeEventListener(
-      "click",
-      this.handleClickOutside.bind(this),
-      true
-    );
-  }
-  render() {
-    let view = <Cart cartItems={this.props.cartItems} removeProduct={this.props.removeProduct}/>
-    return (
-      <header>
-        <div className="container">
-          <div className="brand">
-            <img
-              className="logo"
-              src="https://res.cloudinary.com/sivadass/image/upload/v1493547373/dummy-logo/Veggy.png"
-              alt="Veggy Brand Logo"
-            />
-          </div>
 
-          <div className="search">
-            <a
-              className="mobile-search"
-              href="#"
-              onClick={this.handleMobileSearch.bind(this)}
-            >
-              <img
-                src="https://res.cloudinary.com/sivadass/image/upload/v1494756966/icons/search-green.png"
-                alt="search"
-              />
-            </a>
-            <form
-              action="#"
-              method="get"
-              className={
-                this.state.mobileSearch ? "search-form active" : "search-form"
-              }
-            >
-              <a
-                className="back-button"
-                href="#"
-                onClick={this.handleSearchNav.bind(this)}
-              >
-                <img
-                  src="https://res.cloudinary.com/sivadass/image/upload/v1494756030/icons/back.png"
-                  alt="back"
-                />
-              </a>
-              <input
-                type="search"
+  // headerSection is the header when viewing from a laptop.
+  // todo(ivdone) : cleanup 
+  headerSection() {
+    return <header className="header">
+      <div className="header_overlay"></div>
+      <div className="header_content d-flex flex-row align-items-center justify-content-start">
+        <div className="logo">
+          <Link to="/">
+            <div className="d-flex flex-row align-items-center justify-content-start">
+              <div><img src="images/logo_1.png" alt="" /></div>
+              <div>anaanas</div>
+            </div>
+          </Link>
+        </div>
+        <div className="hamburger"
+          onClick={this.handleToggleMenu.bind(this)}>
+          <i className="fa fa-bars" aria-hidden="true" />
+        </div>
+        <nav className="main_nav">
+          <ul className="d-flex flex-row align-items-start justify-content-start">
+            <li className="active"><a href="#">Women</a></li>
+            <li><a href="#">Men</a></li>
+            <li><a href="#">Kids</a></li>
+            <li><a href="#">Home Deco</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <div className="header_right d-flex flex-row align-items-center justify-content-start ml-auto">
+          <div className="header_search">
+            <form action="#" id="header_search_form">
+              <input type="search"
                 ref="searchBox"
-                placeholder="Search for Vegetables and Fruits"
-                className="search-keyword"
-                onChange={this.props.handleSearch}
-              />
-              <button
-                className="search-button"
+                className="search_input"
+                placeholder="Search Item"
+                required="required"
+                onChange={this.props.handleSearch} />
+              <button className="header_search_button"
                 type="submit"
-                onClick={this.handleSubmit.bind(this)}
-              />
+                onClick={this.handleSubmit.bind(this)}>
+                <img src="images/search.png" alt="" />
+              </button>
             </form>
           </div>
-
           <div className="cart">
-            <div className="cart-info">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>No. of items</td>
-                    <td>:</td>
-                    <td>
-                      <strong>{this.props.totalItems}</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Sub Total</td>
-                    <td>:</td>
-                    <td>
-                      <strong>$ {Number(this.props.total).toFixed(2)}</strong>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <a
-              className="cart-icon"
-              href="#"
-              onClick={this.handleCart.bind(this)}
-              ref="cartButton"
-            >
-              <img
-                className={this.props.cartBounce ? "tada" : " "}
-                src="https://res.cloudinary.com/sivadass/image/upload/v1493548928/icons/bag.png"
-                alt="Cart"
-              />
-              {this.props.totalItems ? (
-                <span className="cart-count">{this.props.totalItems}</span>
-              ) : (
-                  ""
-                )}
-            </a>
-            <div
-              className={
-                this.state.showCart ? "cart-preview active" : "cart-preview"
-              }
-              ref="cartPreview"
-            >
-              <CartScrollBar>{view}</CartScrollBar>
-              <div className="action-block">
-                <button
-                  type="button"
-                  className={this.props.cartItems.length > 0 ? " " : "disabled"}
-                >
-                  PROCEED TO CHECKOUT
-                </button>
+            <Link to="/cart">
+              <div>
+                <img className="cart-image" src="images/cart.svg" alt="https://www.flaticon.com/authors/freepik" />
+                <div>{this.props.totalInCart}</div>
               </div>
-            </div>
+            </Link>
+          </div>
+          <div className="header_phone d-flex flex-row align-items-center justify-content-start">
+            <div><div><img src="images/phone.svg" alt="https://www.flaticon.com/authors/freepik" /></div></div>
+            <div>+1 912-252-7350</div>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
+  }
+
+  render() {
+    return (
+      <div className="super_container">
+        {this.headerSection.bind(this)()}
+      </div>
     );
   }
 }
