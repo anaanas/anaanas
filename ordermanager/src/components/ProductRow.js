@@ -10,6 +10,7 @@ class ProductRow extends React.Component {
 
     return (
       <tr>
+        <td/>
         <td>{id}</td>
         <td>{name}</td>
         <td>{count}</td>

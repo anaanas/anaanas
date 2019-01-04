@@ -39,6 +39,7 @@ class OrderRow extends React.Component {
         </tr>
 
         <tr>
+          <th/>
           <th>product id</th>
           <th>product name</th>
           <th>count</th>
