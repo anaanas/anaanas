@@ -241,22 +241,6 @@ section
 	-o-transform: translateX(350px);
 	transform: translateX(350px);
 }
-.super_container_inner
-{
-	-webkit-transition: all 400ms ease;
-	-moz-transition: all 400ms ease;
-	-ms-transition: all 400ms ease;
-	-o-transition: all 400ms ease;
-	transition: all 400ms ease;
-}
-.super_container_inner.active
-{
-	-webkit-transform: translateX(350px);
-	-moz-transform: translateX(350px);
-	-ms-transform: translateX(350px);
-	-o-transform: translateX(350px);
-	transform: translateX(350px);
-}
 .super_overlay
 {
 	position: fixed;
@@ -274,7 +258,7 @@ section
 	-o-transition: all 400ms ease;
 	transition: all 400ms ease;
 }
-.super_container_inner.active .super_overlay
+.super_container.active .super_overlay
 {
 	visibility: visible;
 	opacity: 1;

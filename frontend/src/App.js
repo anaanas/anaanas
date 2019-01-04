@@ -4,7 +4,7 @@ import Products from "./components/Products";
 import Footer from "./components/Footer";
 import Cart from "./components/Cart";
 import Menu from "./components/Menu";
-import "./scss/style.scss";
+//import "./scss/style.scss";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const allProducts = [
@@ -53,7 +53,7 @@ class App extends Component {
     this.sumTotalItems = this.sumTotalItems.bind(this);
     this.sumTotalAmount = this.sumTotalAmount.bind(this);
     this.checkProduct = this.checkProduct.bind(this);
-    this.handleRemoveProduct = this.handleRemoveProduct.bind(this);
+    this.handleUpdateCart = this.handleUpdateCart.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.Home = this.Home.bind(this);
@@ -122,13 +122,18 @@ class App extends Component {
     this.sumTotalItems(this.state.cart);
     this.sumTotalAmount(this.state.cart);
   }
-  handleRemoveProduct(id) {
+
+  handleUpdateCart(index, quantity) {
     let cart = this.state.cart;
-    let index = cart.findIndex(x => x.id === id);
-    cart.splice(index, 1);
+    if (quantity === 0) {
+      cart.splice(index, 1);
+    } else {
+      cart[index].quantity = quantity;
+    }
     this.setState({
       cart: cart
     });
+    console.log(this.state.cart);
     this.sumTotalItems(this.state.cart);
     this.sumTotalAmount(this.state.cart);
   }
@@ -155,7 +160,7 @@ class App extends Component {
       total += cart[i].price * parseInt(cart[i].quantity);
     }
     this.setState({
-      totalAmount: total
+      totalAmount: total.toFixed(2)
     });
   }
 
@@ -184,7 +189,7 @@ class App extends Component {
 
   Cart() {
     return <Cart
-      handleRemoveProduct={this.handleRemoveProduct}
+      handleUpdateCart={this.handleUpdateCart}
       cartItems={this.state.cart}
     />
   }
@@ -197,7 +202,8 @@ class App extends Component {
             showMenu={this.state.showMenu}
             handleSearch={this.handleSearch}
           />
-          <div className={containerClass}>
+          <div className={containerClass} onClick={this.state.showMenu ? this.handleToggleMenu : undefined}>
+            <div className="super_overlay"></div>
             <Header
               totalInCart={this.state.totalItems}
               cartItems={this.state.cart}
