@@ -12,22 +12,14 @@
     -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" />
 
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
   <!-- TODO : Clean up Css -->
-  <link rel="stylesheet" type="text/css" href="styles/bootstrap-4.1.2/bootstrap.min.css">
-  <link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-  <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-  <link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
-  <link rel="stylesheet" type="text/css" href="styles/cart_responsive.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="styles/cart.css">
-  <link rel="stylesheet" type="text/css" href="styles/category_responsive.css">
-  <link rel="stylesheet" type="text/css" href="styles/category.css">
-  <link rel="stylesheet" type="text/css" href="styles/checkout_responsive.css">
-  <link rel="stylesheet" type="text/css" href="styles/checkout.css">
+  <link rel="stylesheet" type="text/css" href="styles/cart_responsive.css">
   <link rel="stylesheet" type="text/css" href="styles/main_styles.css">
-  <link rel="stylesheet" type="text/css" href="styles/product_responsive.css">
-  <link rel="stylesheet" type="text/css" href="styles/product.css">
   <link rel="stylesheet" type="text/css" href="styles/responsive.css">
 
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
@@ -60,102 +52,5 @@
     -->
 </body>
 
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
-<div id="paypal-button-container"></div>
-<script>
-
-  // Render the PayPal button
-
-  paypal.Button.render({
-
-    // Set your environment
-
-    env: 'sandbox', // sandbox | production
-
-    // Specify the style of the button
-
-    style: {
-      label: 'paypal',
-      size: 'medium',    // small | medium | large | responsive
-      shape: 'rect',     // pill | rect
-      color: 'blue',     // gold | blue | silver | black
-      tagline: false
-    },
-
-    // PayPal Client IDs - replace with your own
-    // Create a PayPal app: https://developer.paypal.com/developer/applications/create
-
-    client: {
-      sandbox: 'Ac69fC1jh87EiTZ7i0cjWWufbpuinenleHagWCqMmeVfDBtzT1naUJr_zPMD2btfEvfZ0N1iHA3yJ9xd',
-      production: '<insert production client id>'
-    },
-
-    // Set up a payment
-    payment: function (data, actions) {
-      return actions.payment.create({
-        transactions: [{
-          amount: {
-            total: '30.11',
-            currency: 'USD',
-            details: {
-              subtotal: '30.00',
-              tax: '0.07',
-              shipping: '0.03',
-              handling_fee: '1.00',
-              shipping_discount: '-1.00',
-              insurance: '0.01'
-            }
-          },
-          description: 'The payment transaction description.',
-          custom: '90048630024435',
-          //invoice_number: '12345', Insert a unique invoice number
-          payment_options: {
-            allowed_payment_method: 'INSTANT_FUNDING_SOURCE'
-          },
-          soft_descriptor: 'ECHI5786786',
-          item_list: {
-            items: [
-              {
-                name: 'hat',
-                description: 'Brown hat.',
-                quantity: '5',
-                price: '3',
-                tax: '0.01',
-                sku: '1',
-                currency: 'USD'
-              },
-              {
-                name: 'handbag',
-                description: 'Black handbag.',
-                quantity: '1',
-                price: '15',
-                tax: '0.02',
-                sku: 'product34',
-                currency: 'USD'
-              }],
-            shipping_address: {
-              recipient_name: 'Brian Robinson',
-              line1: '4th Floor',
-              line2: 'Unit #34',
-              city: 'San Jose',
-              country_code: 'US',
-              postal_code: '95131',
-              phone: '011862212345678',
-              state: 'CA'
-            }
-          }
-        }],
-        note_to_payer: 'Contact us for any questions on your order.'
-      });
-    },
-    onAuthorize: function (data, actions) {
-      return actions.payment.execute().then(function () {
-        window.alert('Payment Complete!');
-      });
-    }
-
-  }, '#paypal-button-container');
-
-</script>
 
 </html>

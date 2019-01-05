@@ -4,7 +4,6 @@ import Products from "./components/Products";
 import Footer from "./components/Footer";
 import Cart from "./components/Cart";
 import Menu from "./components/Menu";
-//import "./scss/style.scss";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const allProducts = [
@@ -12,6 +11,7 @@ const allProducts = [
     _id: 1,
     name: 'Hand-Made Boba Milk Tea',
     image: 'https://storage.googleapis.com/example-product-images/1-min.JPG',
+    category: "milk tea",
     price: 5.95,
     availableQuantity: 100,
   },
@@ -19,6 +19,7 @@ const allProducts = [
     _id: 2,
     name: 'Wanglai Fruit Tea',
     image: 'https://storage.googleapis.com/example-product-images/11-min.JPG',
+    category: "fruit tea",
     price: 5.55,
     availableQuantity: 10,
   },
@@ -26,6 +27,7 @@ const allProducts = [
     _id: 3,
     name: 'Senyong Milk Tea',
     image: 'https://storage.googleapis.com/example-product-images/16-min.JPG',
+    category: "milk tea",
     price: 6.35,
     availableQuantity: 0,
   },
@@ -58,6 +60,7 @@ class App extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.Home = this.Home.bind(this);
   }
+
   // Fetch Initial Set of Products from external API
   getProducts() {
     allProducts.forEach((e) => {
@@ -191,6 +194,7 @@ class App extends Component {
     return <Cart
       handleUpdateCart={this.handleUpdateCart}
       cartItems={this.state.cart}
+      totalAmount={this.state.totalAmount}
     />
   }
   render() {
