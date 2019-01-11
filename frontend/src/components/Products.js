@@ -17,23 +17,21 @@ class Products extends Component {
         return x.name.toLowerCase().includes(term.toLowerCase()) || !term;
       };
     }
-    
+
     productsData = this.props.productsList
       .filter(searchingFor(term))
       .map((product, i) => {
         return (
-          <CSSTransition
-            key={i}
-            classNames="products"
-            timeout={{ enter: 500, exit: 300 }}
+          <div
+            key={product._id}
+            className="col-xl-4 col-md-6"
           >
             <Product
-              key={product._id}
               product={product}
               addToCart={this.props.addToCart}
               openModal={this.props.openModal}
             />
-          </CSSTransition>
+          </div>
         );
       });
 
@@ -45,12 +43,37 @@ class Products extends Component {
       view = <NoResults />;
     } else {
       view = (
-        <TransitionGroup className="products">
-          {productsData}
-        </TransitionGroup>
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6 offset-lg-3">
+              <div className="section_title text-center">Popular on Little Closet</div>
+            </div>
+          </div>
+          <div className="row page_nav_row">
+            <div className="col">
+              <div className="page_nav">
+                <ul className="d-flex flex-row align-items-start justify-content-center">
+                  <li className="active"><a href="category.html">Women</a></li>
+                  <li><a href="category.html">Men</a></li>
+                  <li><a href="category.html">Kids</a></li>
+                  <li><a href="category.html">Home Deco</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="row products_row">
+            {productsData}
+          </div>
+          <div className="row load_more_row">
+            <div className="col">
+              <div className="button load_more ml-auto mr-auto"><a href="#">load more</a></div>
+            </div>
+          </div>
+        </div>
+
       );
     }
-    return <div className="products-wrapper">{view}</div>;
+    return <div className="products">{view}</div>;
   }
 }
 

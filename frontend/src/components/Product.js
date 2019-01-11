@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Counter from "./Counter";
 
-const availabilityLabel = count => {
+const AvailabilityLabel = (prop) => {
+  let count = prop.count;
   if (count >= 20) {
     return <p className="badge badge-success">available</p>;
   }
@@ -99,6 +100,7 @@ class Product extends Component {
     let name = product.name;
     let price = product.price;
     let id = product._id;
+    let category = product.category;
     let availableQuantity = product.availableQuantity;
 
     let buttonState = this.getButtonState();
@@ -118,30 +120,49 @@ class Product extends Component {
             )}
           />
         </div>
-        <h4 className="product-name">{name}</h4>
-        <p className="product-price">{price}</p>
-        <Counter
-          quantity={this.state.quantity}
-          updateQuantity={this.updateQuantity}
-        />
-        {availabilityLabel(availableQuantity)}
-        <div className="product-action">
-          <button
-            className={buttonState.className}
-            type="button"
-            onClick={this.addToCart.bind(
-              this,
-              image,
-              name,
-              price,
-              id,
-              this.state.quantity,
-            )}
-            disabled={buttonState.disabled}>
-            {buttonState.display}
-          </button>
+        <div className="product_content">
+          <div className="product_info d-flex flex-row align-items-start justify-content-start">
+            <div>
+              <div>
+                <div className="product_name"><a>{name}</a></div>
+                <div className="product_category">In <a>{category}</a></div>
+              </div>
+            </div>
+            <div className="ml-auto text-right">
+              <div className="rating_r rating_r_4 home_item_rating"><i></i><i></i><i></i><i></i><i></i></div>
+              <div className="product_price text-right">{"$" + Math.floor(price)}<span>{"." + (price * 100 % 100)}</span></div>
+              <AvailabilityLabel count={availableQuantity} />
+            </div>
+          </div>
+          <div className="product_buttons">
+            <div className="text-right d-flex flex-row align-items-start justify-content-start">
+              <button className="text-center d-flex flex-column align-items-center justify-content-center">
+                <Counter
+                  quantity={this.state.quantity}
+                  updateQuantity={this.updateQuantity}
+                />
+              </button>
+              <button
+                className="product_button product_cart text-center d-flex flex-column align-items-center justify-content-center"
+                type="button"
+                onClick={this.addToCart.bind(
+                  this,
+                  image,
+                  name,
+                  price,
+                  id,
+                  this.state.quantity,
+                )}
+                disabled={buttonState.disabled}>
+                <div><div>
+                  <img src="images/cart.svg" className="svg" alt="" /><div>+</div>
+                </div></div>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+
     );
   }
 }
