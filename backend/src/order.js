@@ -18,10 +18,10 @@ exports.createOrderHandler = async (req, res) => {
 };
 
 exports.getOrdersHandler = async (req, res) => {
-  var filter = req.body;
   try {
-    const orders = await crud.get(filter, ORDERS_TABLE);
-    res.send(orders);
+    const orders = await crud.get(req.query.filter, ORDERS_TABLE);
+    // TODO: change Access-Control-Allow-Origin to allow our domain before production.
+    res.set('Access-Control-Allow-Origin', 'http://localhost:3000').send(orders);
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ err: 'internal error' });
