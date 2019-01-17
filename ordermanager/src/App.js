@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import FilterableOrderTable from './components/FilterableOrderTable'
 
-const allOrders = [
+const mockOrders = [
   {
     _id: 123,
     products: [
@@ -134,9 +134,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <FilterableOrderTable
-          orders={allOrders}
-        />
+        <FilterableOrderTable/>
       </div>
     );
   }

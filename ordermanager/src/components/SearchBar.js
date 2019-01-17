@@ -30,7 +30,6 @@ class SearchBar extends React.Component {
             checked={this.props.completedOrderOnly}
             onChange={this.handleCompletedOrderChange}
           />
-          {' '}
           Only show completed orders
         </p>
       </form>
