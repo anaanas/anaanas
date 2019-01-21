@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import FilterableOrderTable from './components/FilterableOrderTable'
+import FilterableOrderTable from './components/FilterableOrderTable';
+import Login from './components/Login';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import OrderTable from './components/OrderTable';
 
 const allOrders = [
   {
@@ -26,15 +29,15 @@ const allOrders = [
           sweetness: '50%sweet',
           size: 'regular',
           topping: 'alo',
-        }
+        },
       },
     ],
     customerName: 'zzz',
-    cell: "1234444444",
-    address: "Amazon Day 1",
-    status: "completed",
-    createdAt: "date1",
-    modifiedAt: "date1",
+    cell: '1234444444',
+    address: 'Amazon Day 1',
+    status: 'completed',
+    createdAt: 'date1',
+    modifiedAt: 'date1',
     amountToPay: 15.5,
   },
   {
@@ -60,15 +63,15 @@ const allOrders = [
           sweetness: '25%sweet',
           size: 'regular',
           topping: 'alo',
-        }
+        },
       },
     ],
     customerName: 'ymq',
-    cell: "1235555555",
-    address: "MS Day 2",
-    status: "pending",
-    createdAt: "date2",
-    modifiedAt: "date2",
+    cell: '1235555555',
+    address: 'MS Day 2',
+    status: 'pending',
+    createdAt: 'date2',
+    modifiedAt: 'date2',
     amountToPay: 9.95,
   },
   {
@@ -94,15 +97,15 @@ const allOrders = [
           sweetness: 'regular',
           size: 'regular',
           topping: 'alo',
-        }
+        },
       },
     ],
     customerName: 'fzy',
-    cell: "1236666666",
-    address: "Day 3",
-    status: "pending",
-    createdAt: "date3",
-    modifiedAt: "date3",
+    cell: '1236666666',
+    address: 'Day 3',
+    status: 'pending',
+    createdAt: 'date3',
+    modifiedAt: 'date3',
     amountToPay: 20,
   },
   {
@@ -121,23 +124,36 @@ const allOrders = [
       },
     ],
     customerName: 'ymq',
-    cell: "1235555555",
-    address: "Apple",
-    status: "completed",
-    createdAt: "date4",
-    modifiedAt: "date4",
+    cell: '1235555555',
+    address: 'Apple',
+    status: 'completed',
+    createdAt: 'date4',
+    modifiedAt: 'date4',
     amountToPay: 25,
   },
 ];
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      orders: allOrders,
+    };
+  }
+  FilteredOrderTable() {
+    return <FilterableOrderTable orders={this.state.orders} />;
+  }
+
   render() {
     return (
-      <div className="App">
-        <FilterableOrderTable
-          orders={allOrders}
-        />
-      </div>
+      <Router>
+        <div className="App">
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route path="/ordertable" component={this.FilteredOrderTable.bind(this)} />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
