@@ -5,6 +5,9 @@ import OrderRow from './OrderRow';
 
 class OrderTable extends React.Component {
   render() {
+    if (this.props.orders === null) {
+      return <div/>
+    }
     const filterText = this.props.filterText;
     const completedOrderOnly = this.props.completedOrderOnly;
 

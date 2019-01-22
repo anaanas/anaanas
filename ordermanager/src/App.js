@@ -5,7 +5,7 @@ import Login from './components/Login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import OrderTable from './components/OrderTable';
 
-const allOrders = [
+const mockOrders = [
   {
     _id: 123,
     products: [
