@@ -41,7 +41,8 @@ exports.getProductsHandler = async (req, res) => {
   var filter = req.body;
   try {
     const products = await crud.get(filter, PRODUCTS_TABLE);
-    res.send(products);
+    // TODO: change Access-Control-Allow-Origin to allow our domain before production.
+    res.set('Access-Control-Allow-Origin', 'http://localhost:3000').send(products);
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ err: 'internal error' });

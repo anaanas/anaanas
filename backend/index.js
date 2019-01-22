@@ -17,12 +17,14 @@ exports.createProducts = async (req, res) => {
 exports.getProducts = product.getProductsHandler;
 
 exports.getOrders = async (req, res) => {
-    if (auth.getRole(req) !== ROLE_ADMIN) {
-        // TODO : send redirect to login page.
-        res.status(401).send({error: 'method not allowed, login required'});
-        return;
-    }
-    await order.getOrdersHandler(req, res);
+    // TODO(yang): enable this when login page is ready.
+    // if (auth.getRole(req) !== ROLE_ADMIN) {
+    //     // TODO : send redirect to login page.
+    //     res.status(401).send({error: 'method not allowed, login required'});
+    //     return;
+    // }
+    // await order.getOrdersHandler(req, res);
+    order.getOrdersHandler(req, res);
 }
 
 exports.createOrder = order.createOrderHandler;

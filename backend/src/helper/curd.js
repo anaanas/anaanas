@@ -49,7 +49,10 @@ exports.get = async (filter, collectionName) => {
   await connectToDBIfNotAlive();
   if (filter === undefined) {
     filter = {};
+  } else {
+    filter = JSON.parse(filter)
   }
+  console.log(filter);
   return db
     .collection(collectionName)
     .find(filter)
