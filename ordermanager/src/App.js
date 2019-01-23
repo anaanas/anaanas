@@ -3,7 +3,6 @@ import './App.css';
 import FilterableOrderTable from './components/FilterableOrderTable';
 import Login from './components/Login';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import OrderTable from './components/OrderTable';
 
 const mockOrders = [
   {
@@ -137,7 +136,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      orders: allOrders,
+      orders: {},
     };
   }
   FilteredOrderTable() {
