@@ -8,13 +8,13 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
-      email: 'aaa@a.bc.com  ',
-      password: '12345 ',
+      username: 'admin',
+      password: 'admin',
     };
   }
 
   validateForm() {
-    return this.state.email.length > 0 && this.state.password.length > 0;
+    return this.state.username.length > 0 && this.state.password.length > 0;
   }
 
   handleChange = event => {
@@ -25,19 +25,38 @@ export default class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.history.push("/ordertable");
+    // TODO: change it to production URL
+    fetch('http://localhost:8010/anaanas-dev/us-central1/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: this.state.username,
+        pass: this.state.password
+      })
+    }).then((resp) => {
+      return resp.text();
+    }).then((body) => {
+      alert(body)
+      if (body === 'login succeeded') {
+        this.props.history.push("/ordertable");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
   };
 
   render() {
     return (
       <div className="Login">
         <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="email" bsSize="large">
-            <ControlLabel>Email</ControlLabel>
+          <FormGroup controlId="username" bsSize="large">
+            <ControlLabel>Username</ControlLabel>
             <FormControl
               autoFocus
-              type="email"
-              value={this.state.email}
+              type="username"
+              value={this.state.username}
               onChange={this.handleChange}
             />
           </FormGroup>
