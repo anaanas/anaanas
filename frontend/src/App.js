@@ -6,6 +6,7 @@ import Cart from "./components/Cart";
 import Menu from "./components/Menu";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+const GET_PRODUCT_ENDPOINT = 'https://us-central1-anaanas-dev.cloudfunctions.net/getProducts';
 const allProducts = [
   {
     _id: 1,
@@ -63,11 +64,23 @@ class App extends Component {
 
   // Fetch Initial Set of Products from external API
   getProducts() {
-    allProducts.forEach((e) => {
-      e.quantityInCart = 0;
+    fetch(GET_PRODUCT_ENDPOINT)
+    .then(response => {
+      if (!response.ok) {
+        throw 'failed to fetch products';
+      }
+      return response.json();
     })
-    this.setState({
-      products: allProducts
+    .then(products => {
+      products.forEach((e) => {
+        e.quantityInCart = 0;
+      })
+      this.setState({
+        products: products
+      });
+    })
+    .catch((error) => {
+      console.error(error);
     });
   }
 
