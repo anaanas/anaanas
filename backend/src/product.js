@@ -38,7 +38,7 @@ exports.getProductsHandler = async (req, res) => {
     res.status(405).send({ error: 'only allow GET method at this endpoint' });
   }
 
-  var filter = req.body;
+  var filter = req.query.filter;
   try {
     const products = await crud.get(filter, PRODUCTS_TABLE);
     // TODO: change Access-Control-Allow-Origin to allow our domain before production.
