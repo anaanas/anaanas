@@ -4,7 +4,7 @@ const mongodb = require('mongodb');
 const f = require('util').format;
 const MongoClient = mongodb.MongoClient;
 // Database name in mongodb
-const dbName = 'wanglai-dev';
+const dbName = process.env.MONGODB_NAME === undefined ? 'wanglai-dev' : process.env.MONGODB_NAME;
 
 var dbConnection;
 var db;
