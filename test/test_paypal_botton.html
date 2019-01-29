@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+</head>
+
+<body>
+    <div id="paypal-button-container"></div>
+
+    <script>
+        var d = { 
+            payload: JSON.stringify({  
+   			    products:[  
+     				{  
+         				productId:1,
+                        count:2,
+                        option:{  
+                            sweetness:"normal",
+                            temperature:"hot",
+                            size:"regular",
+                            topping:"pearls"
+                        }
+                    }       
+                ],
+                cell:"888888888",
+                address: {  
+                    street1:"abcd",
+                    city:"Santa Clara",
+                    state:"CA",
+                    zipCode:"95050"
+                },
+                customerName:"Someone Unkown",
+                status:"pending",
+                amountToPay: 100.59
+            })
+        };
+        var order_id;
+        paypal.Button.render({
+
+            env: 'sandbox', // sandbox | production
+
+            // Show the buyer a 'Pay Now' button in the checkout flow
+            commit: true,
+
+            // payment() is called when the button is clicked
+            payment: function() {
+
+                // Set up a url on your server to create the payment
+                var CREATE_URL = 'http://localhost:8010/anaanas-dev/us-central1/setupPayment';
+                var data = d;
+                // Make a call to your server to set up the payment
+                return paypal.request.post(CREATE_URL, data)
+                    .then(function(res) {
+                        order_id = res.order_id;
+                        return res.paypal_txn_id;
+                    });
+            },
+
+            // onAuthorize() is called when the buyer approves the payment
+            onAuthorize: function(data, actions) {
+
+                // Set up a url on your server to execute the payment
+                var EXECUTE_URL = 'http://localhost:8010/anaanas-dev/us-central1/executePayment';
+
+                // Set up the data you need to pass to your server
+                var data = {
+                    paymentID: data.paymentID,
+                    payerID: data.payerID,
+                    orderID: order_id
+                };
+
+                // Make a call to your server to execute the payment
+                return paypal.request.post(EXECUTE_URL, data)
+                    .then(function (res) {
+                        window.alert('Payment Complete!');
+                    });
+            }
+
+        }, '#paypal-button-container');
+    </script>
+</body>
