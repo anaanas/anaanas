@@ -50,3 +50,6 @@ exports.getHTTP = async (req, res) => {
   console.log('Hello World: db is ' + dbConnection.isConnected());
   res.send('Hello World: db is ' + dbConnection.isConnected());
 };
+
+exports.setupPayment = order.setupPayment;
+exports.executePayment = order.executePayment;

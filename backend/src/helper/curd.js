@@ -45,11 +45,16 @@ exports.createMany = async (docs, collectionName) => {
   return db.collection(collectionName).insertMany(docs);
 };
 
+exports.createOne = async (doc, collectionName) => {
+  await connectToDBIfNotAlive();
+  return db.collection(collectionName).insertOne(doc);
+};
+
 exports.get = async (filter, collectionName) => {
   await connectToDBIfNotAlive();
   if (filter === undefined) {
     filter = {};
-  } else {
+  } else if (typeof filter == "string") {
     filter = JSON.parse(filter)
   }
   console.log(filter);
@@ -59,4 +64,13 @@ exports.get = async (filter, collectionName) => {
     .toArray();
 };
 
-// TODO: implement update and delete
+exports.updateById = async (collectionName, filter, delta) => {
+  await connectToDBIfNotAlive();
+  if (filter === undefined) {
+    filter = {};
+  } 
+  console.log(filter);
+  return db
+    .collection(collectionName)
+    .updateOne(filter, {$set : delta})
+}
