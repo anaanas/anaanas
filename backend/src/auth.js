@@ -11,13 +11,13 @@ exports.loginHandler = async (req, res) => {
   if (user !== 'admin' || password !== 'admin') {
     res.cookie(USER_INFO, undefined);
     // TODO: change Access-Control-Allow-Origin to allow our domain before production.
-    res.set('Access-Control-Allow-Origin', 'http://localhost:3000').set('Access-Control-Allow-Headers', 'Content-Type').send('failed to login');
+    res.send('failed to login');
     return;
   }
 
   // TODO: change Access-Control-Allow-Origin to allow our domain before production.
   res.cookie(USER_INFO, jwtHelper.getToken({ user: user, role: 'admin' }));
-  res.set('Access-Control-Allow-Origin', 'http://localhost:3000').set('Access-Control-Allow-Headers', 'Content-Type').send('login succeeded');
+  res.send('login succeeded');
 };
 
 // Return role of the user. Will return undefined if token not valid or expired.
@@ -25,6 +25,7 @@ exports.getRole = req => {
   var role = '';
   try {
     cookieHelper.parseCookies(req);
+    console.log('cookie:');
     console.log(req.cookies);
     // Will throw if token corrupted.
     const claim = jwtHelper.getClaim(req.cookies[USER_INFO]);

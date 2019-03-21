@@ -3,33 +3,37 @@
 const auth = require('./src/auth');
 const product = require('./src/product');
 const order = require('./src/order');
+const cors = require('./src/CORSwhitelist');
 const ROLE_ADMIN = 'admin';
 
 exports.createProducts = async (req, res) => {
-    if (auth.getRole(req) !== ROLE_ADMIN) {
-        // TODO : send redirect to login page.
-        res.status(401).send({error: 'method not allowed, login required'});
-        return;
-    }
-    await product.createProductsHandler(req, res);
+  if (auth.getRole(req) !== ROLE_ADMIN) {
+    // TODO : send redirect to login page.
+    res.status(401).send({ error: 'method not allowed, login required' });
+    return;
+  }
+  await product.createProductsHandler(req, res);
 }
 
 exports.getProducts = product.getProductsHandler;
 
 exports.getOrders = async (req, res) => {
-    // TODO(yang): enable this when login page is ready.
-    // if (auth.getRole(req) !== ROLE_ADMIN) {
-    //     // TODO : send redirect to login page.
-    //     res.status(401).send({error: 'method not allowed, login required'});
-    //     return;
-    // }
-    // await order.getOrdersHandler(req, res);
-    order.getOrdersHandler(req, res);
+  cors.CORSHandler(res, res);
+  if (auth.getRole(req) !== ROLE_ADMIN) {
+    // TODO : send redirect to login page.
+    res.status(401).send({ error: 'method not allowed, login required' });
+    return;
+  }
+  await order.getOrdersHandler(req, res);
+  // order.getOrdersHandler(req, res);
 }
 
 exports.createOrder = order.createOrderHandler;
 
-exports.login = auth.loginHandler;
+exports.login = async (req, res) => {
+  cors.CORSHandler(res, res);
+  auth.loginHandler(req, res);
+}
 
 // Use this for testing auth.
 exports.getRole = async (req, res) => {

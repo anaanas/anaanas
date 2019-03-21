@@ -4,6 +4,8 @@ import Products from "./components/Products";
 import Footer from "./components/Footer";
 import Cart from "./components/Cart";
 import Menu from "./components/Menu";
+import FilterableOrderTable from './ordercomponents/FilterableOrderTable';
+import Login from './ordercomponents/Login';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const allProducts = [
@@ -197,17 +199,27 @@ class App extends Component {
       totalAmount={this.state.totalAmount}
     />
   }
+
+  FilteredOrderTable() {
+    return <FilterableOrderTable orders={this.state.orders} />;
+  }
+
   render() {
     let containerClass = this.state.showMenu ? "super_container active" : "super_container";
     return (
       <Router>
-        <div>
+        <div className="App">
+          <Switch>
+            <Route exact path="/" component={this.Home.bind(this)} />
+            <Route exact path="/login" component={Login} />
+            <Route path="/ordertable" component={this.FilteredOrderTable.bind(this)} />
+            <Route path="/cart" component={this.Cart.bind(this)} />
+          </Switch>
           <Menu
             showMenu={this.state.showMenu}
             handleSearch={this.handleSearch}
           />
           <div className={containerClass} onClick={this.state.showMenu ? this.handleToggleMenu : undefined}>
-            <div className="super_overlay"></div>
             <Header
               totalInCart={this.state.totalItems}
               cartItems={this.state.cart}
@@ -217,10 +229,6 @@ class App extends Component {
               categoryTerm={this.state.category}
               productQuantity={this.state.moq}
             />
-            <Switch>
-              <Route exact path="/" component={this.Home.bind(this)} />
-              <Route path="/cart" component={this.Cart.bind(this)} />
-            </Switch>
             <Footer />
           </div>
         </div>

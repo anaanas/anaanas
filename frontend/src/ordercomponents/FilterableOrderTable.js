@@ -39,34 +39,43 @@ class FilterableOrderTable extends React.Component {
   }
 
   handleClick() {
-    // TODO: change it to production URL
-    fetch('http://localhost:8010/anaanas-dev/us-central1/getOrders')
-    .then(response => {
-      return response.json();
+    var url = 'https://us-central1-anaanas-dev.cloudfunctions.net/getOrders'
+    if (process.env.CLOUDFUNCTIONS == 'local') {
+      url = 'http://localhost:8010/anaanas-dev/us-central1/getOrders'
+    }
+    fetch(url, {
+      method: 'GET',
+      credentials: 'include'
     })
-    .then(orders => {
-      this.setState({
-        orders: orders
+      .then(response => {
+        if (!response.ok) {
+          throw 'zzzzzzzz'
+        }
+        return response.json();
+      })
+      .then(orders => {
+        this.setState({
+          orders: orders
+        });
+        console.log(JSON.stringify(orders));
+      })
+      .catch((error) => {
+        console.error(error);
       });
-      console.log(JSON.stringify(orders));
-    })
-    .catch((error) => {
-      console.error(error);
-    });
   }
 
   render() {
     return (
-      <div>
+      <div className="ordertable" style={{ margin: 100 }} >
         <DatePicker
           placeholderText="Click to select a date"
           selected={this.state.date}
           onChange={this.handleDatePickerChange}
         />
-        <br/>
+        <br />
         <button type="button" onClick={this.handleClick}>Get orders</button>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <SearchBar
           filterText={this.state.filterText}
           completedOrderOnly={this.state.completedOrderOnly}
