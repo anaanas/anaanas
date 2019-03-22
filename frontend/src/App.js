@@ -6,7 +6,8 @@ import Cart from "./components/Cart";
 import Menu from "./components/Menu";
 import FilterableOrderTable from './ordercomponents/FilterableOrderTable';
 import Login from './ordercomponents/Login';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// TODO: figure out a way to do it with BrowerRounter
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 
 const allProducts = [
   {
